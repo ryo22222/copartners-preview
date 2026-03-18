@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CO PARTNERS | M&A, MBO, IPO Advisory</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0a1628;--navy-light:#131f38;--navy-mid:#1a2a4a;
+  --gold:#c4a265;--gold-light:#d4b87a;--gold-pale:rgba(196,162,101,.08);
+  --white:#f8f7f5;--gray:#94a3b8;--gray-light:#cbd5e1;
+  --text:#e2e8f0;--text-dim:#8899ad;
+  --radius:14px;--transition:.35s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Noto Sans JP','Inter',sans-serif;background:var(--navy);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto}
+
+/* Utility */
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.section{padding:80px 0}
+.section-label{
+  font-family:'Inter',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px
+}
+.section-label::before{content:'';width:28px;height:1px;background:var(--gold)}
+.section-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;letter-spacing:-.02em;margin-bottom:40px;line-height:1.3}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== HEADER ===== */
+header{
+  position:fixed;top:0;left:0;width:100%;z-index:100;
+  padding:16px 0;transition:background var(--transition),box-shadow var(--transition),padding var(--transition)
+}
+header.scrolled{background:rgba(10,22,40,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(196,162,101,.1);padding:10px 0}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo img{height:32px;filter:brightness(0) invert(1);opacity:.9}
+nav.desktop{display:none}
+nav.desktop a{font-size:.82rem;font-weight:500;color:var(--gray-light);padding:6px 16px;border-radius:8px;transition:color var(--transition),background var(--transition)}
+nav.desktop a:hover{color:var(--gold);background:var(--gold-pale)}
+
+/* Hamburger */
+.hamburger{width:32px;height:32px;display:flex;flex-direction:column;justify-content:center;gap:6px;cursor:pointer;z-index:200;background:none;border:none}
+.hamburger span{display:block;width:100%;height:1.5px;background:var(--white);border-radius:2px;transition:var(--transition)}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+/* Mobile menu */
+.mobile-menu{
+  position:fixed;top:0;right:-100%;width:80%;max-width:360px;height:100vh;
+  background:var(--navy-light);z-index:150;padding:100px 40px 40px;
+  transition:right .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:8px
+}
+.mobile-menu.open{right:0}
+.mobile-menu a{font-size:1.1rem;font-weight:500;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.06);color:var(--gray-light);transition:color var(--transition)}
+.mobile-menu a:hover{color:var(--gold)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:140;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.show{opacity:1;pointer-events:auto}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:120px 20px 80px;position:relative;overflow:hidden
+}
+.hero::before{
+  content:'';position:absolute;top:-40%;right:-30%;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(196,162,101,.06) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none
+}
+.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-logo{margin-bottom:32px}
+.hero-logo img{height:48px;filter:brightness(0) invert(1);opacity:.85}
+.hero-tagline{
+  font-size:.72rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px
+}
+.hero h1{
+  font-size:clamp(1.15rem,3.2vw,1.65rem);font-weight:400;line-height:2;
+  color:var(--text);letter-spacing:.04em
+}
+.hero-line{width:48px;height:1px;background:var(--gold);margin:40px auto 0;opacity:.5}
+.scroll-hint{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-size:.65rem;letter-spacing:.15em;color:var(--text-dim);text-transform:uppercase
+}
+.scroll-hint span{width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.3)}}
+
+/* ===== SERVICES ===== */
+.services-grid{display:grid;gap:16px}
+.service-card{
+  background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));
+  border:1px solid rgba(196,162,101,.1);border-radius:var(--radius);padding:32px 28px;
+  position:relative;overflow:hidden;transition:border-color var(--transition),transform var(--transition)
+}
+.service-card:hover{border-color:rgba(196,162,101,.25);transform:translateY(-2px)}
+.service-card .num{font-family:'Inter';font-size:.65rem;font-weight:600;color:var(--gold);letter-spacing:.15em;margin-bottom:12px}
+.service-card h3{font-size:1rem;font-weight:600;margin-bottom:10px;line-height:1.5}
+.service-card p{font-size:.85rem;color:var(--text-dim);line-height:1.7}
+
+/* ===== COMPANY ===== */
+.company-grid{display:grid;gap:2px;background:rgba(196,162,101,.06);border-radius:var(--radius);overflow:hidden}
+.company-row{display:grid;grid-template-columns:110px 1fr;background:var(--navy)}
+.company-row dt{
+  padding:18px 20px;font-size:.78rem;font-weight:600;color:var(--gold);
+  border-right:1px solid rgba(196,162,101,.08);display:flex;align-items:flex-start
+}
+.company-row dd{padding:18px 20px;font-size:.88rem;line-height:1.7;color:var(--text)}
+
+/* ===== MEMBERS ===== */
+.members-grid{display:grid;gap:28px}
+.member-card{
+  background:var(--navy-light);border:1px solid rgba(255,255,255,.04);border-radius:var(--radius);
+  padding:32px 24px;transition:border-color var(--transition)
+}
+.member-card:hover{border-color:rgba(196,162,101,.15)}
+.member-name{font-size:1.25rem;font-weight:700;margin-bottom:4px}
+.member-name-en{font-family:'Inter';font-size:.72rem;color:var(--text-dim);letter-spacing:.08em;margin-bottom:16px}
+.member-bio{font-size:.84rem;line-height:1.9;color:var(--gray-light);margin-bottom:16px}
+.member-credentials{display:flex;flex-wrap:wrap;gap:6px}
+.member-credentials span{
+  font-size:.7rem;padding:5px 12px;border-radius:20px;
+  background:var(--gold-pale);color:var(--gold);border:1px solid rgba(196,162,101,.15)
+}
+
+/* ===== NEWS ===== */
+.news-list{display:flex;flex-direction:column}
+.news-item{
+  display:grid;grid-template-columns:1fr;gap:4px;
+  padding:20px 0;border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background var(--transition)
+}
+.news-date{font-family:'Inter';font-size:.75rem;color:var(--gold);font-weight:500;letter-spacing:.05em}
+.news-text{font-size:.88rem;color:var(--gray-light);line-height:1.7}
+
+/* ===== CONTACT ===== */
+.contact-section{background:var(--navy-light);border-top:1px solid rgba(196,162,101,.08)}
+.contact-form{max-width:600px;margin:0 auto}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:.78rem;font-weight:500;color:var(--gray);margin-bottom:8px}
+.form-group label .req{color:var(--gold);font-size:.65rem;margin-left:6px}
+.form-group input,.form-group textarea{
+  width:100%;padding:14px 16px;background:var(--navy);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;color:var(--text);font-size:.9rem;font-family:inherit;
+  transition:border-color var(--transition),box-shadow var(--transition);outline:none
+}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(196,162,101,.1)}
+.form-group textarea{min-height:140px;resize:vertical}
+.submit-btn{
+  width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:var(--navy);font-size:.9rem;font-weight:600;border:none;border-radius:10px;
+  cursor:pointer;transition:opacity var(--transition),transform var(--transition);letter-spacing:.05em
+}
+.submit-btn:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ===== FOOTER ===== */
+footer{padding:32px 0;text-align:center;border-top:1px solid rgba(255,255,255,.04)}
+footer p{font-size:.7rem;color:var(--text-dim);letter-spacing:.08em}
+
+/* ===== DESKTOP ===== */
+@media(min-width:768px){
+  .section{padding:120px 0}
+  .container{padding:0 40px}
+  .hamburger{display:none}
+  nav.desktop{display:flex;align-items:center;gap:4px}
+  .services-grid{grid-template-columns:repeat(3,1fr);gap:20px}
+  .company-row{grid-template-columns:160px 1fr}
+  .members-grid{grid-template-columns:repeat(3,1fr);gap:24px}
+  .news-item{grid-template-columns:120px 1fr;gap:24px;align-items:baseline}
+  .hero h1{font-size:clamp(1.3rem,2.2vw,1.7rem)}
+  .hero-logo img{height:56px}
+}
+@media(min-width:1024px){
+  .container{padding:0 60px}
+  .service-card{padding:40px 32px}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+  <div class="container header-inner">
+    <a href="#" class="logo"><img src="https://copartners.jp/wp-content/uploads/2024/07/ロゴ-名刺色.png" alt="CO PARTNERS"></a>
+    <nav class="desktop">
+      <a href="#services">Services</a>
+      <a href="#company">Company</a>
+      <a href="#members">Members</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="hamburger" id="menuBtn" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="overlay" id="overlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services">Services</a>
+  <a href="#company">Company Profile</a>
+  <a href="#members">Main Member</a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact Us</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <img src="https://copartners.jp/wp-content/uploads/2024/07/ロゴ-名刺色.png" alt="CO PARTNERS">
+    </div>
+    <p class="hero-tagline">Mission</p>
+    <h1>質の高い投資銀行サービスを<br>リーズナブルに提供することで、<br>経済の新陳代謝を促し、<br>社会の発展に貢献する</h1>
+    <div class="hero-line"></div>
+  </div>
+  <div class="scroll-hint">
+    <span></span>
+    Scroll
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Services</p>
+      <h2 class="section-title">事業内容</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="num">01</div>
+        <h3>M&A / MBO Advisory</h3>
+        <p>M&A、MBO等におけるフィナンシャル・アドバイザリー業務（FA）</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="num">02</div>
+        <h3>Valuation</h3>
+        <p>企業価値評価業務（バリュエーション）</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="num">03</div>
+        <h3>IPO / Capital Strategy</h3>
+        <p>IPO、資本政策等のアドバイザリー及び顧問業務 等</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Company Profile -->
+<section class="section" id="company">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Company Profile</p>
+      <h2 class="section-title">会社概要</h2>
+    </div>
+    <div class="company-grid reveal">
+      <div class="company-row"><dt>会社名</dt><dd>CO Partners 株式会社</dd></div>
+      <div class="company-row"><dt>設立</dt><dd>2022年1月</dd></div>
+      <div class="company-row"><dt>本社所在地</dt><dd>〒100-0006<br>東京都千代田区有楽町1-6-8　松井ビル5F</dd></div>
+      <div class="company-row"><dt>代表者</dt><dd>代表取締役　浅井 耕作</dd></div>
+      <div class="company-row"><dt>経営理念</dt><dd>金融サービスを通じて経済の新陳代謝を促し、社会の発展に貢献する</dd></div>
+    </div>
+  </div>
+</section>
+
+<!-- Members -->
+<section class="section" id="members">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Main Member</p>
+      <h2 class="section-title">メンバー</h2>
+    </div>
+    <div class="members-grid">
+
+      <div class="member-card reveal">
+        <p class="member-name">浅井　耕作</p>
+        <p class="member-name-en">Kosaku Asai</p>
+        <p class="member-bio">野村證券の国内営業及び投資銀行部門において、事業法人向けカバレッジ業務に従事した後、当社設立。1983年生まれ、慶應義塾大学法学部政治学科卒。</p>
+        <div class="member-credentials">
+          <span>ファンデリー 社外取締役</span>
+          <span>ギークリー 社外取締役</span>
+          <span>SYNRA GROUP 社外取締役</span>
+          <span>CMA</span>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <p class="member-name">田村　一幸</p>
+        <p class="member-name-en">Kazuyuki Tamura</p>
+        <p class="member-bio">監査法人にて法定監査に従事した後、野村證券の投資銀行部門においてM&Aアドバイザリー業務に従事。その後、リクルートホールディングスにてM&A関連業務に携わり、海外展開を推進。1979年生まれ、慶應義塾大学経済学部卒。</p>
+        <div class="member-credentials">
+          <span>アイリッジ 社外取締役</span>
+          <span>公認会計士（日本）</span>
+        </div>
+      </div>
+
+      <div class="member-card reveal">
+        <p class="member-name">森田　亮平</p>
+        <p class="member-name-en">Ryohei Morita</p>
+        <p class="member-bio">野村證券の投資銀行部門においてM&Aアドバイザリー業務に従事した後、日本政策投資銀行のグループ企業でプライベート・エクイティ投資に携わり、アイリッジ（東証グロース）の取締役CFOとして財務戦略を指揮。1986年生まれ、東京大学工学部・米国バージニア大学ダーデンビジネススクール（MBA、フルブライト奨学生）卒。</p>
+        <div class="member-credentials">
+          <span>東京大学工学部卒</span>
+          <span>MBA（Darden）</span>
+          <span>フルブライト奨学生</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- News -->
+<section class="section" id="news">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">News</p>
+      <h2 class="section-title">ニュース</h2>
+    </div>
+    <div class="news-list reveal">
+      <div class="news-item"><span class="news-date">2026.02</span><span class="news-text">弊社が売り手側FAを務める上場企業による未上場企業の買収が公表されました</span></div>
+      <div class="news-item"><span class="news-date">2025.12</span><span class="news-text">未上場企業による資金調達時のバリュエーションを実施しました</span></div>
+      <div class="news-item"><span class="news-date">2025.11</span><span class="news-text">未企業企業による同業者買収時のバリュエーションを実施しました</span></div>
+      <div class="news-item"><span class="news-date">2025.09</span><span class="news-text">PEファンド投資先による未上場企業買収の売り手側FAを務めました</span></div>
+      <div class="news-item"><span class="news-date">2025.07</span><span class="news-text">弊社が買い手側FAを務めるフロイント産業（東証スタンダード）によるMBOが公表されました</span></div>
+      <div class="news-item"><span class="news-date">2025.07</span><span class="news-text">ファンドによる投資先企業売却の売り手側FAを務めました</span></div>
+      <div class="news-item"><span class="news-date">2024.09</span><span class="news-text">未上場企業による同業者買収検討の買い手側FA、財務・税務DD、バリュエーションを実施しました</span></div>
+      <div class="news-item"><span class="news-date">2024.09</span><span class="news-text">上場企業による同業者買収検討のバリュエーションを実施しました</span></div>
+      <div class="news-item"><span class="news-date">2024.03</span><span class="news-text">移転いたしました</span></div>
+      <div class="news-item"><span class="news-date">2023.11</span><span class="news-text">社名をAuxiliary Partners 株式会社からCO Partners 株式会社に変更いたしました</span></div>
+      <div class="news-item"><span class="news-date">2023.09</span><span class="news-text">上場企業による海外企業買収の財務アドバイスを実施しました</span></div>
+      <div class="news-item"><span class="news-date">2023.01</span><span class="news-text">PEファンドによる未上場企業への資本参加の売り手側FAを務めました</span></div>
+      <div class="news-item"><span class="news-date">2022</span><span class="news-text">弊社がオリジネーションに関与したPEファンドによる上場企業買収が公表されました</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Contact Us</p>
+      <h2 class="section-title">お問い合わせ</h2>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label>お名前<span class="req">※</span></label>
+        <input type="text" placeholder="山田 太郎">
+      </div>
+      <div class="form-group">
+        <label>フリガナ<span class="req">※</span></label>
+        <input type="text" placeholder="ヤマダ タロウ">
+      </div>
+      <div class="form-group">
+        <label>会社名</label>
+        <input type="text" placeholder="株式会社〇〇">
+      </div>
+      <div class="form-group">
+        <label>メールアドレス<span class="req">※</span></label>
+        <input type="email" placeholder="info@example.com">
+      </div>
+      <div class="form-group">
+        <label>電話番号<span class="req">※</span></label>
+        <input type="tel" placeholder="03-0000-0000">
+      </div>
+      <div class="form-group">
+        <label>お問い合わせ内容<span class="req">※</span></label>
+        <textarea placeholder="お問い合わせ内容をご入力ください"></textarea>
+      </div>
+      <button class="submit-btn">送信する</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>COPYRIGHT © 2026 CO PARTNERS. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+// Header scroll
+const header=document.getElementById('header');
+window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>40)});
+
+// Mobile menu
+const menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),overlay=document.getElementById('overlay');
+function toggleMenu(){menuBtn.classList.toggle('active');mobileMenu.classList.toggle('open');overlay.classList.toggle('show');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':''}
+menuBtn.addEventListener('click',toggleMenu);
+overlay.addEventListener('click',toggleMenu);
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',toggleMenu));
+
+// Reveal on scroll
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
