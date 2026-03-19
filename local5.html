@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CO PARTNERS | M&A, MBO, IPO Advisory</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0a1628;--navy-light:#131f38;--navy-mid:#1a2a4a;
+  --gold:#c4a265;--gold-light:#d4b87a;--gold-pale:rgba(196,162,101,.08);
+  --bg:#ffffff;--bg-alt:#f6f5f2;--bg-warm:#faf9f7;
+  --text-dark:#1a202c;--text-body:#475569;--text-muted:#64748b;--text-faint:#94a3b8;
+  --border:#e8e6e1;--border-light:#f0eeea;
+  --radius:12px;--transition:.35s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Noto Sans JP','Inter',sans-serif;background:var(--bg);color:var(--text-dark);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto}
+
+/* Utility */
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.section{padding:80px 0}
+.section-label{
+  font-family:'Inter',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px
+}
+.section-label::before{content:'';width:28px;height:1px;background:var(--gold)}
+.section-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;letter-spacing:-.02em;margin-bottom:40px;line-height:1.3;color:var(--text-dark)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== HEADER (white) ===== */
+header{
+  position:fixed;top:0;left:0;width:100%;z-index:100;
+  padding:16px 0;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  transition:box-shadow var(--transition),padding var(--transition)
+}
+header.scrolled{box-shadow:0 1px 0 var(--border);padding:10px 0}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo img{height:32px}
+nav.desktop{display:none}
+nav.desktop a{font-size:.82rem;font-weight:500;color:var(--text-muted);padding:6px 16px;border-radius:8px;transition:color var(--transition),background var(--transition)}
+nav.desktop a:hover{color:var(--navy);background:rgba(10,22,40,.04)}
+
+/* Hamburger */
+.hamburger{width:32px;height:32px;display:flex;flex-direction:column;justify-content:center;gap:6px;cursor:pointer;z-index:200;background:none;border:none}
+.hamburger span{display:block;width:100%;height:1.5px;background:var(--navy);border-radius:2px;transition:var(--transition)}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+/* Mobile menu */
+.mobile-menu{
+  position:fixed;top:0;right:-100%;width:80%;max-width:360px;height:100vh;
+  background:var(--bg);z-index:150;padding:100px 40px 40px;
+  transition:right .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:8px;
+  box-shadow:-8px 0 32px rgba(0,0,0,.08)
+}
+.mobile-menu.open{right:0}
+.mobile-menu a{font-size:1.1rem;font-weight:500;padding:16px 0;border-bottom:1px solid var(--border-light);color:var(--text-body);transition:color var(--transition)}
+.mobile-menu a:hover{color:var(--navy)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:140;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.show{opacity:1;pointer-events:auto}
+
+/* ===== HERO (navy — keeps brand gravity) ===== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:120px 20px 80px;position:relative;overflow:hidden;
+  background:var(--navy)
+}
+.hero::before{
+  content:'';position:absolute;top:-40%;right:-30%;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(196,162,101,.06) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none
+}
+.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-logo{margin-bottom:32px}
+.hero-logo img{height:48px;filter:brightness(0) invert(1);opacity:.85}
+.hero-tagline{
+  font-size:.72rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px
+}
+.hero h1{
+  font-size:clamp(1.15rem,3.2vw,1.65rem);font-weight:400;line-height:2;
+  color:#e2e8f0;letter-spacing:.04em
+}
+.hero-line{width:48px;height:1px;background:var(--gold);margin:40px auto 0;opacity:.5}
+.scroll-hint{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-size:.65rem;letter-spacing:.15em;color:rgba(255,255,255,.4);text-transform:uppercase
+}
+.scroll-hint span{width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.3)}}
+
+/* ===== SERVICES (white) ===== */
+.services-grid{display:grid;gap:16px}
+.service-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;
+  position:relative;overflow:hidden;transition:border-color var(--transition),transform var(--transition),box-shadow var(--transition)
+}
+.service-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 32px rgba(196,162,101,.08)}
+.service-card .num{font-family:'Inter';font-size:.65rem;font-weight:600;color:var(--gold);letter-spacing:.15em;margin-bottom:12px}
+.service-card h3{font-size:1rem;font-weight:600;margin-bottom:10px;line-height:1.5;color:var(--text-dark)}
+.service-card p{font-size:.85rem;color:var(--text-body);line-height:1.7}
+
+/* ===== PROCESS (warm white) ===== */
+.process-section{background:var(--bg-alt);color:var(--text-dark);padding:80px 0}
+.process-lead{
+  font-size:.9rem;line-height:1.9;color:var(--text-body);margin-bottom:48px;max-width:800px
+}
+.process-lead strong{color:var(--navy);font-weight:700}
+
+/* Process icons row */
+.process-icons{
+  display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px;padding:16px 0
+}
+.process-icon-item{
+  display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 6px;
+  text-align:center;flex:1;max-width:120px
+}
+.process-icon-item .icon-circle{
+  width:44px;height:44px;border-radius:50%;background:var(--bg);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--text-body)
+}
+.process-icon-item .icon-circle svg{width:20px;height:20px}
+.process-icon-item .icon-label{font-size:.65rem;color:var(--text-muted);font-weight:500;line-height:1.3}
+.process-arrow{
+  display:flex;align-items:center;justify-content:center;padding:0 2px;color:var(--gold);font-size:.9rem;flex-shrink:0
+}
+
+/* Phase headers */
+.phase-header{display:grid;grid-template-columns:1fr;gap:0}
+.phase-header-item{
+  padding:14px 16px;text-align:center;font-size:.78rem;font-weight:700;letter-spacing:.05em
+}
+.phase-header-item:nth-child(1){background:var(--navy);color:#fff;border-radius:8px 8px 0 0}
+.phase-header-item:nth-child(2){background:var(--navy-mid);color:#fff}
+.phase-header-item:nth-child(3){background:#4a6fa5;color:#fff}
+
+/* Phase body */
+.phase-body{display:grid;grid-template-columns:1fr;gap:0}
+.phase-col{padding:20px 16px;border:1px solid var(--border);border-top:none;background:var(--bg)}
+.phase-col:last-child{border-radius:0 0 8px 8px}
+.phase-col ul{list-style:none;padding:0;margin:0}
+.phase-col ul li{
+  font-size:.82rem;color:var(--text-body);line-height:1.8;padding-left:16px;position:relative
+}
+.phase-col ul li::before{
+  content:'';position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--gold)
+}
+
+/* Mobile phase cards */
+.phase-card{border-radius:10px;overflow:hidden;margin-bottom:12px}
+.phase-card .phase-header-item{border-radius:0}
+.phase-card .phase-col{border-radius:0;border:1px solid var(--border);border-top:none}
+
+/* Desktop timeline */
+.process-timeline-desktop{display:none}
+
+/* Comparison - full width */
+.comparison-block{margin-top:28px;width:100vw;position:relative;left:50%;transform:translateX(-50%);padding:0 20px}
+.comparison-row{
+  display:flex;flex-direction:column;margin-bottom:12px;border-radius:10px;overflow:hidden
+}
+.comparison-label{
+  padding:10px 16px;font-size:.7rem;font-weight:700;
+  display:flex;align-items:center;line-height:1.3;letter-spacing:.03em
+}
+.comparison-bar{
+  display:flex;align-items:center;padding:14px 16px;font-size:.78rem;font-weight:600;
+  letter-spacing:.02em;line-height:1.5
+}
+.comparison-row.copartners .comparison-label{background:var(--navy);color:var(--gold)}
+.comparison-row.copartners .comparison-bar{
+  background:linear-gradient(135deg,var(--navy-mid),#2d4a7a);color:var(--gold)
+}
+.comparison-row.general .comparison-label{background:var(--bg-alt);color:var(--text-muted);border:1px solid var(--border);border-bottom:none}
+.comparison-row.general .comparison-bar{background:var(--bg-alt);color:var(--text-muted);border:1px solid var(--border);border-top:none}
+.comparison-row.general .comparison-bar-fill{
+  background:var(--text-faint);color:#fff;padding:14px 16px;display:flex;align-items:center;
+  font-size:.78rem;font-weight:600
+}
+
+/* ===== COMPANY (white) ===== */
+.company-grid{display:grid;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+.company-row{display:grid;grid-template-columns:110px 1fr;background:var(--bg)}
+.company-row dt{
+  padding:18px 20px;font-size:.78rem;font-weight:600;color:var(--navy);
+  border-right:1px solid var(--border);display:flex;align-items:flex-start;background:var(--bg-warm)
+}
+.company-row dd{padding:18px 20px;font-size:.88rem;line-height:1.7;color:var(--text-body)}
+
+/* ===== MEMBERS (light bg) ===== */
+.members-section{background:var(--bg-alt)}
+.members-grid{display:grid;gap:28px}
+.member-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px 24px;transition:border-color var(--transition),box-shadow var(--transition)
+}
+.member-card:hover{border-color:rgba(196,162,101,.3);box-shadow:0 8px 32px rgba(196,162,101,.06)}
+.member-name{font-size:1.25rem;font-weight:700;margin-bottom:4px;color:var(--text-dark)}
+.member-name-en{font-family:'Inter';font-size:.72rem;color:var(--text-faint);letter-spacing:.08em;margin-bottom:16px}
+.member-bio{font-size:.84rem;line-height:1.9;color:var(--text-body);margin-bottom:16px}
+.member-credentials{display:flex;flex-wrap:wrap;gap:6px}
+.member-credentials span{
+  font-size:.7rem;padding:5px 12px;border-radius:20px;
+  background:rgba(10,22,40,.04);color:var(--navy);border:1px solid var(--border)
+}
+
+/* ===== NEWS (white) ===== */
+.news-list{display:flex;flex-direction:column}
+.news-item{
+  display:grid;grid-template-columns:1fr;gap:6px;
+  padding:20px 0;border-bottom:1px solid var(--border-light);
+  transition:background var(--transition)
+}
+.news-item-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.news-date{font-family:'Inter';font-size:.75rem;color:var(--gold);font-weight:500;letter-spacing:.05em}
+.news-tag{
+  font-family:'Inter';font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:3px;display:inline-block
+}
+.news-tag--fa{background:rgba(196,162,101,.12);color:#a68840}
+.news-tag--valuation{background:rgba(45,74,122,.08);color:#2d4a7a}
+.news-tag--mbo{background:rgba(120,80,160,.08);color:#7850a0}
+.news-tag--ipo{background:rgba(60,160,120,.08);color:#2a8a5e}
+.news-tag--info{background:rgba(0,0,0,.04);color:var(--text-faint)}
+.news-text{font-size:.88rem;color:var(--text-body);line-height:1.7}
+
+/* News VIEW MORE */
+.news-hidden{display:none}
+.news-hidden.show{display:flex;flex-direction:column}
+.news-toggle-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin:32px auto 0;padding:12px 32px;
+  font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--navy);background:transparent;border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;transition:all var(--transition)
+}
+.news-toggle-btn:hover{background:var(--bg-alt);border-color:var(--text-faint)}
+.news-toggle-btn svg{width:14px;height:14px;transition:transform var(--transition)}
+.news-toggle-btn.expanded svg{transform:rotate(180deg)}
+
+/* ===== CONTACT (navy accent) ===== */
+.contact-section{background:var(--navy);color:#e2e8f0}
+.contact-section .section-label{color:var(--gold)}
+.contact-section .section-label::before{background:var(--gold)}
+.contact-section .section-title{color:#fff}
+.contact-form{max-width:600px;margin:0 auto}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.5);margin-bottom:8px}
+.form-group label .req{color:var(--gold);font-size:.65rem;margin-left:6px}
+.form-group input,.form-group textarea{
+  width:100%;padding:14px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;color:#fff;font-size:.9rem;font-family:inherit;
+  transition:border-color var(--transition),box-shadow var(--transition);outline:none
+}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(196,162,101,.15)}
+.form-group textarea{min-height:140px;resize:vertical}
+.submit-btn{
+  width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:var(--navy);font-size:.9rem;font-weight:600;border:none;border-radius:10px;
+  cursor:pointer;transition:opacity var(--transition),transform var(--transition);letter-spacing:.05em
+}
+.submit-btn:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ===== FOOTER ===== */
+footer{padding:32px 0;text-align:center;border-top:1px solid var(--border)}
+footer p{font-size:.7rem;color:var(--text-faint);letter-spacing:.08em}
+
+/* ===== DESKTOP ===== */
+@media(min-width:768px){
+  .section{padding:120px 0}
+  .process-section{padding:120px 0}
+  .container{padding:0 40px}
+  .hamburger{display:none}
+  nav.desktop{display:flex;align-items:center;gap:4px}
+  .services-grid{grid-template-columns:repeat(3,1fr);gap:20px}
+  .company-row{grid-template-columns:160px 1fr}
+  .members-grid{grid-template-columns:repeat(3,1fr);gap:24px}
+  .hero h1{font-size:clamp(1.3rem,2.2vw,1.7rem)}
+  .hero-logo img{height:56px}
+
+  /* Process desktop */
+  .process-timeline-mobile{display:none}
+  .process-timeline-desktop{display:block}
+  .phase-header{grid-template-columns:repeat(3,1fr)}
+  .phase-header-item:nth-child(1){border-radius:8px 0 0 0}
+  .phase-header-item:nth-child(3){border-radius:0 8px 0 0}
+  .phase-body{grid-template-columns:repeat(3,1fr)}
+  .phase-col:first-child{border-radius:0 0 0 8px}
+  .phase-col:last-child{border-radius:0 0 8px 0}
+  .process-icons{gap:8px;padding:24px 0}
+  .process-icon-item{max-width:160px;padding:16px}
+  .process-icon-item .icon-circle{width:56px;height:56px}
+  .process-icon-item .icon-circle svg{width:24px;height:24px}
+  .process-icon-item .icon-label{font-size:.72rem}
+  .process-arrow{padding:0 8px;font-size:1.2rem}
+  .comparison-block{padding:0 40px}
+  .comparison-row{flex-direction:row;min-height:52px}
+  .comparison-label{width:120px;min-width:120px;padding:12px 10px;justify-content:center;text-align:center}
+}
+@media(min-width:1024px){
+  .container{padding:0 60px}
+  .service-card{padding:40px 32px}
+  .comparison-block{padding:0 60px}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+  <div class="container header-inner">
+    <a href="#" class="logo"><img src="https://copartners.jp/wp-content/uploads/2024/07/ロゴ-名刺色.png" alt="CO PARTNERS"></a>
+    <nav class="desktop">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#company">Company</a>
+      <a href="#members">Members</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="hamburger" id="menuBtn" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="overlay" id="overlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services">Services</a>
+  <a href="#process">Process</a>
+  <a href="#company">Company Profile</a>
+  <a href="#members">Main Member</a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact Us</a>
+</div>
+
+<!-- Hero (navy) -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <img src="https://copartners.jp/wp-content/uploads/2024/07/ロゴ-名刺色.png" alt="CO PARTNERS">
+    </div>
+    <p class="hero-tagline">Mission</p>
+    <h1>質の高い投資銀行サービスを<br>リーズナブルに提供することで、<br>経済の新陳代謝を促し、<br>社会の発展に貢献する</h1>
+    <div class="hero-line"></div>
+  </div>
+  <div class="scroll-hint">
+    <span></span>
+    Scroll
+  </div>
+</section>
+
+<!-- Services (white) -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Services</p>
+      <h2 class="section-title">事業内容</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="num">01</div>
+        <h3>M&A / MBO Advisory</h3>
+        <p>M&A、MBO等におけるフィナンシャル・アドバイザリー業務（FA）</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="num">02</div>
+        <h3>Valuation</h3>
+        <p>企業価値評価業務（バリュエーション）</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="num">03</div>
+        <h3>IPO / Capital Strategy</h3>
+        <p>IPO、資本政策等のアドバイザリー及び顧問業務 等</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process (warm white) -->
+<section class="process-section" id="process">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Our Approach</p>
+      <h2 class="section-title">案件成立までの流れ</h2>
+    </div>
+    <p class="process-lead reveal">
+      当社は、執行実務のクオリティはもちろん、特に<strong>日頃の情報提供や壁打ち、オリジネーションのフェーズ</strong>を重要視しています。<br>
+      初期段階から継続的に伴走し、構想形成から実行まで一貫して支援します。
+    </p>
+
+    <!-- Icons row -->
+    <div class="process-icons reveal">
+      <div class="process-icon-item">
+        <div class="icon-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg>
+        </div>
+        <span class="icon-label">潜在的な課題<br>初期的構想</span>
+      </div>
+      <div class="process-arrow">≫</div>
+      <div class="process-icon-item">
+        <div class="icon-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
+        </div>
+        <span class="icon-label">検討</span>
+      </div>
+      <div class="process-arrow">≫</div>
+      <div class="process-icon-item">
+        <div class="icon-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <span class="icon-label">実務</span>
+      </div>
+    </div>
+
+    <!-- Phase: Mobile -->
+    <div class="process-timeline-mobile reveal">
+      <div class="phase-card">
+        <div class="phase-header-item" style="background:#0a1628;color:#fff;border-radius:10px 10px 0 0">① 情報提供・壁打ち</div>
+        <div class="phase-col" style="border-radius:0 0 10px 10px">
+          <ul><li>日常的なコミュニケーション</li><li>人間関係の構築</li><li>経営課題、ニーズの把握</li><li>適切な専門家の紹介</li></ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-header-item" style="background:#1a2a4a;color:#fff;border-radius:10px 10px 0 0">② オリジネーション・検討</div>
+        <div class="phase-col" style="border-radius:0 0 10px 10px">
+          <ul><li>具体的なアクション</li><li>候補先探索</li><li>アプローチ、提案</li><li>条件調整、方向性整理</li></ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-header-item" style="background:#4a6fa5;color:#fff;border-radius:10px 10px 0 0">③ 執行</div>
+        <div class="phase-col" style="border-radius:0 0 10px 10px">
+          <ul><li>基本合意</li><li>DD</li><li>最終契約</li><li>クロージング</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase: Desktop -->
+    <div class="process-timeline-desktop reveal">
+      <div class="phase-header">
+        <div class="phase-header-item">① 情報提供・壁打ち</div>
+        <div class="phase-header-item">② オリジネーション・検討</div>
+        <div class="phase-header-item">③ 執行</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-col">
+          <ul><li>日常的なコミュニケーション</li><li>人間関係の構築</li><li>経営課題、ニーズの把握</li><li>適切な専門家の紹介</li></ul>
+        </div>
+        <div class="phase-col">
+          <ul><li>具体的なアクション</li><li>候補先探索</li><li>アプローチ、提案</li><li>条件調整、方向性整理</li></ul>
+        </div>
+        <div class="phase-col">
+          <ul><li>基本合意</li><li>DD</li><li>最終契約</li><li>クロージング</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison -->
+    <div class="comparison-block reveal">
+      <div class="comparison-row copartners">
+        <div class="comparison-label">CO Partners</div>
+        <div class="comparison-bar">初期段階から継続的に伴走し、構想形成から実行まで支援</div>
+      </div>
+      <div class="comparison-row general">
+        <div class="comparison-label">一般的な業者</div>
+        <div class="comparison-bar" style="padding:0;overflow:hidden">
+          <span style="flex:1"></span>
+          <div class="comparison-bar-fill">執行局面から参画</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Company (white) -->
+<section class="section" id="company">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Company Profile</p>
+      <h2 class="section-title">会社概要</h2>
+    </div>
+    <div class="company-grid reveal">
+      <div class="company-row"><dt>会社名</dt><dd>CO Partners 株式会社</dd></div>
+      <div class="company-row"><dt>設立</dt><dd>2022年1月</dd></div>
+      <div class="company-row"><dt>本社所在地</dt><dd>〒100-0006<br>東京都千代田区有楽町1-6-8　松井ビル5F</dd></div>
+      <div class="company-row"><dt>代表者</dt><dd>代表取締役　浅井 耕作</dd></div>
+      <div class="company-row"><dt>経営理念</dt><dd>金融サービスを通じて経済の新陳代謝を促し、社会の発展に貢献する</dd></div>
+    </div>
+  </div>
+</section>
+
+<!-- Members (light bg) -->
+<section class="section members-section" id="members">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Main Member</p>
+      <h2 class="section-title">メンバー</h2>
+    </div>
+    <div class="members-grid">
+      <div class="member-card reveal">
+        <p class="member-name">浅井　耕作</p>
+        <p class="member-name-en">Kosaku Asai</p>
+        <p class="member-bio">野村證券の国内営業及び投資銀行部門において、事業法人向けカバレッジ業務に従事した後、当社設立。1983年生まれ、慶應義塾大学法学部政治学科卒。</p>
+        <div class="member-credentials">
+          <span>ファンデリー 社外取締役</span>
+          <span>ギークリー 社外取締役</span>
+          <span>SYNRA GROUP 社外取締役</span>
+          <span>CMA</span>
+        </div>
+      </div>
+      <div class="member-card reveal">
+        <p class="member-name">田村　一幸</p>
+        <p class="member-name-en">Kazuyuki Tamura</p>
+        <p class="member-bio">監査法人にて法定監査に従事した後、野村證券の投資銀行部門においてM&Aアドバイザリー業務に従事。その後、リクルートホールディングスにてM&A関連業務に携わり、海外展開を推進。1979年生まれ、慶應義塾大学経済学部卒。</p>
+        <div class="member-credentials">
+          <span>アイリッジ 社外取締役</span>
+          <span>公認会計士（日本）</span>
+        </div>
+      </div>
+      <div class="member-card reveal">
+        <p class="member-name">森田　亮平</p>
+        <p class="member-name-en">Ryohei Morita</p>
+        <p class="member-bio">野村證券の投資銀行部門においてM&Aアドバイザリー業務に従事した後、日本政策投資銀行のグループ企業でプライベート・エクイティ投資に携わり、アイリッジ（東証グロース）の取締役CFOとして財務戦略を指揮。1986年生まれ、東京大学工学部・米国バージニア大学ダーデンビジネススクール（MBA、フルブライト奨学生）卒。</p>
+        <div class="member-credentials">
+          <span>東京大学工学部卒</span>
+          <span>MBA（Darden）</span>
+          <span>フルブライト奨学生</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- News (white) -->
+<section class="section" id="news">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">News</p>
+      <h2 class="section-title">ニュース</h2>
+    </div>
+    <div class="news-list reveal">
+      <div class="news-item">
+        <div class="news-item-header"><span class="news-date">2026.02</span><span class="news-tag news-tag--fa">FA</span></div>
+        <span class="news-text">弊社が売り手側FAを務める上場企業による未上場企業の買収が公表されました</span>
+      </div>
+      <div class="news-item">
+        <div class="news-item-header"><span class="news-date">2025.12</span><span class="news-tag news-tag--valuation">Valuation</span></div>
+        <span class="news-text">未上場企業による資金調達時のバリュエーションを実施しました</span>
+      </div>
+      <div class="news-item">
+        <div class="news-item-header"><span class="news-date">2025.11</span><span class="news-tag news-tag--valuation">Valuation</span></div>
+        <span class="news-text">未上場企業による同業者買収時のバリュエーションを実施しました</span>
+      </div>
+      <div class="news-item">
+        <div class="news-item-header"><span class="news-date">2025.09</span><span class="news-tag news-tag--fa">FA</span></div>
+        <span class="news-text">PEファンド投資先による未上場企業買収の売り手側FAを務めました</span>
+      </div>
+      <div class="news-item">
+        <div class="news-item-header"><span class="news-date">2025.07</span><span class="news-tag news-tag--mbo">MBO</span></div>
+        <span class="news-text">弊社が買い手側FAを務めるフロイント産業（東証スタンダード）によるMBOが公表されました</span>
+      </div>
+
+      <div class="news-hidden" id="newsMore">
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2025.07</span><span class="news-tag news-tag--fa">FA</span></div>
+          <span class="news-text">ファンドによる投資先企業売却の売り手側FAを務めました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2024.09</span><span class="news-tag news-tag--fa">FA</span></div>
+          <span class="news-text">未上場企業による同業者買収検討の買い手側FA、財務・税務DD、バリュエーションを実施しました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2024.09</span><span class="news-tag news-tag--valuation">Valuation</span></div>
+          <span class="news-text">上場企業による同業者買収検討のバリュエーションを実施しました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2024.03</span><span class="news-tag news-tag--info">Info</span></div>
+          <span class="news-text">移転いたしました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2023.11</span><span class="news-tag news-tag--info">Info</span></div>
+          <span class="news-text">社名をAuxiliary Partners 株式会社からCO Partners 株式会社に変更いたしました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2023.09</span><span class="news-tag news-tag--fa">FA</span></div>
+          <span class="news-text">上場企業による海外企業買収の財務アドバイスを実施しました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2023.01</span><span class="news-tag news-tag--fa">FA</span></div>
+          <span class="news-text">PEファンドによる未上場企業への資本参加の売り手側FAを務めました</span>
+        </div>
+        <div class="news-item">
+          <div class="news-item-header"><span class="news-date">2022</span><span class="news-tag news-tag--fa">FA</span></div>
+          <span class="news-text">弊社がオリジネーションに関与したPEファンドによる上場企業買収が公表されました</span>
+        </div>
+      </div>
+    </div>
+    <button class="news-toggle-btn" id="newsToggle">
+      <span>View More</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- Contact (navy) -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Contact Us</p>
+      <h2 class="section-title">お問い合わせ</h2>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label>お名前<span class="req">※</span></label>
+        <input type="text" placeholder="山田 太郎">
+      </div>
+      <div class="form-group">
+        <label>フリガナ<span class="req">※</span></label>
+        <input type="text" placeholder="ヤマダ タロウ">
+      </div>
+      <div class="form-group">
+        <label>会社名</label>
+        <input type="text" placeholder="株式会社〇〇">
+      </div>
+      <div class="form-group">
+        <label>メールアドレス<span class="req">※</span></label>
+        <input type="email" placeholder="info@example.com">
+      </div>
+      <div class="form-group">
+        <label>電話番号<span class="req">※</span></label>
+        <input type="tel" placeholder="03-0000-0000">
+      </div>
+      <div class="form-group">
+        <label>お問い合わせ内容<span class="req">※</span></label>
+        <textarea placeholder="お問い合わせ内容をご入力ください"></textarea>
+      </div>
+      <button class="submit-btn">送信する</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>COPYRIGHT &copy; 2026 CO PARTNERS. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+// Header scroll
+const header=document.getElementById('header');
+window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>40)});
+
+// Mobile menu
+const menuBtn=document.getElementById('menuBtn'),mobileMenu=document.getElementById('mobileMenu'),overlay=document.getElementById('overlay');
+function toggleMenu(){menuBtn.classList.toggle('active');mobileMenu.classList.toggle('open');overlay.classList.toggle('show');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':''}
+menuBtn.addEventListener('click',toggleMenu);
+overlay.addEventListener('click',toggleMenu);
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',toggleMenu));
+
+// Reveal on scroll
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(el=>io.observe(el));
+
+// News toggle
+const newsToggle=document.getElementById('newsToggle');
+const newsMore=document.getElementById('newsMore');
+newsToggle.addEventListener('click',()=>{
+  const expanded=newsMore.classList.toggle('show');
+  newsToggle.classList.toggle('expanded',expanded);
+  newsToggle.querySelector('span').textContent=expanded?'Close':'View More';
+});
+</script>
+</body>
+</html>
