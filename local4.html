@@ -127,22 +127,21 @@ nav.desktop a:hover{color:var(--gold);background:var(--gold-pale)}
   display:grid;grid-template-columns:1fr;gap:0;margin-bottom:0
 }
 .phase-header-item{
-  padding:16px 20px;text-align:center;font-size:.8rem;font-weight:700;letter-spacing:.05em;
+  padding:14px 16px;text-align:center;font-size:.78rem;font-weight:700;letter-spacing:.05em;
   position:relative
 }
-.phase-header-item:nth-child(1){background:#1a2a4a;color:#fff;border-radius:8px 0 0 0}
-.phase-header-item:nth-child(2){background:#2d4a7a;color:#fff}
-.phase-header-item:nth-child(3){background:#4a6fa5;color:#fff;border-radius:0 8px 0 0}
+.phase-header-item:nth-child(1){background:#1a2a4a;color:#fff;border-radius:8px 8px 0 0}
+.phase-header-item:nth-child(2){background:#2d4a7a;color:#fff;border-radius:0}
+.phase-header-item:nth-child(3){background:#4a6fa5;color:#fff;border-radius:0}
 
 /* Phase body */
 .phase-body{
   display:grid;grid-template-columns:1fr;gap:0
 }
 .phase-col{
-  padding:24px 20px;border:1px solid #e2e8f0;border-top:none
+  padding:20px 16px;border:1px solid #e2e8f0;border-top:none
 }
-.phase-col:first-child{border-radius:0 0 0 8px}
-.phase-col:last-child{border-radius:0 0 8px 0}
+.phase-col:last-child{border-radius:0 0 8px 8px}
 .phase-col ul{list-style:none;padding:0;margin:0}
 .phase-col ul li{
   font-size:.82rem;color:#475569;line-height:1.8;padding-left:16px;position:relative
@@ -152,47 +151,58 @@ nav.desktop a:hover{color:var(--gold);background:var(--gold-pale)}
   border-radius:50%;background:#c4a265
 }
 
+/* Mobile: phase cards stacked with header+body paired */
+.phase-card{border-radius:10px;overflow:hidden;margin-bottom:12px}
+.phase-card .phase-header-item{border-radius:0}
+.phase-card .phase-col{border-radius:0;border:1px solid #e2e8f0;border-top:none}
+
 /* Process icons row */
 .process-icons{
-  display:grid;grid-template-columns:1fr;gap:0;margin-bottom:0
+  display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px;
+  padding:16px 0
 }
 .process-icon-item{
-  display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 16px;
-  text-align:center
+  display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 6px;
+  text-align:center;flex:1;max-width:120px
 }
 .process-icon-item .icon-circle{
-  width:56px;height:56px;border-radius:50%;background:#f1f5f9;
+  width:44px;height:44px;border-radius:50%;background:#f1f5f9;
   display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;color:#475569
+  font-size:1rem;color:#475569
 }
-.process-icon-item .icon-label{font-size:.72rem;color:#64748b;font-weight:500;line-height:1.4}
+.process-icon-item .icon-circle svg{width:20px;height:20px}
+.process-icon-item .icon-label{font-size:.65rem;color:#64748b;font-weight:500;line-height:1.3}
 .process-arrow{
-  display:flex;align-items:center;justify-content:center;padding:0 8px;color:#94a3b8;font-size:1.2rem
+  display:flex;align-items:center;justify-content:center;padding:0 2px;color:#c4a265;
+  font-size:.9rem;flex-shrink:0
 }
 
+/* Desktop timeline (hidden on mobile, shown on desktop) */
+.process-timeline-desktop{display:none}
+
 /* Comparison bar */
-.comparison-block{margin-top:32px}
+.comparison-block{margin-top:28px}
 .comparison-row{
-  display:flex;align-items:stretch;margin-bottom:12px;border-radius:8px;overflow:hidden;
-  min-height:52px
+  display:flex;flex-direction:column;margin-bottom:12px;border-radius:10px;overflow:hidden
 }
 .comparison-label{
-  width:80px;min-width:80px;padding:12px 10px;font-size:.7rem;font-weight:600;
-  display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.3;
-  background:#f1f5f9;color:#475569;flex-shrink:0
+  padding:10px 16px;font-size:.7rem;font-weight:700;
+  display:flex;align-items:center;line-height:1.3;
+  background:#f1f5f9;color:#475569;letter-spacing:.03em
 }
 .comparison-bar{
-  flex:1;display:flex;align-items:center;padding:12px 16px;font-size:.78rem;font-weight:600;
-  letter-spacing:.02em;line-height:1.4
+  display:flex;align-items:center;padding:14px 16px;font-size:.78rem;font-weight:600;
+  letter-spacing:.02em;line-height:1.5
 }
+.comparison-row.copartners .comparison-label{background:#0a1628;color:#c4a265}
 .comparison-row.copartners .comparison-bar{
-  background:linear-gradient(135deg,#0a1628,#1a2a4a);color:#c4a265
+  background:linear-gradient(135deg,#1a2a4a,#2d4a7a);color:#c4a265
 }
 .comparison-row.general .comparison-bar{
-  background:#e2e8f0;color:#64748b;justify-content:flex-end
+  background:#e2e8f0;color:#64748b
 }
 .comparison-row.general .comparison-bar-fill{
-  background:#94a3b8;color:#fff;padding:12px 16px;display:flex;align-items:center;
+  background:#94a3b8;color:#fff;padding:14px 16px;display:flex;align-items:center;
   font-size:.78rem;font-weight:600
 }
 
@@ -293,11 +303,24 @@ footer p{font-size:.7rem;color:var(--text-dim);letter-spacing:.08em}
   .hero h1{font-size:clamp(1.3rem,2.2vw,1.7rem)}
   .hero-logo img{height:56px}
 
-  /* Process responsive */
+  /* Process responsive - desktop */
+  .process-timeline-mobile{display:none}
+  .process-timeline-desktop{display:block}
   .phase-header{grid-template-columns:repeat(3,1fr)}
+  .phase-header-item:nth-child(1){border-radius:8px 0 0 0}
+  .phase-header-item:nth-child(3){border-radius:0 8px 0 0}
   .phase-body{grid-template-columns:repeat(3,1fr)}
-  .process-icons{grid-template-columns:1fr auto 1fr auto 1fr}
-  .comparison-label{width:120px;min-width:120px}
+  .phase-col:first-child{border-radius:0 0 0 8px}
+  .phase-col:last-child{border-radius:0 0 8px 0}
+  .process-icons{gap:8px;padding:24px 0}
+  .process-icon-item{max-width:160px;padding:16px}
+  .process-icon-item .icon-circle{width:56px;height:56px}
+  .process-icon-item .icon-circle svg{width:24px;height:24px}
+  .process-icon-item .icon-label{font-size:.72rem}
+  .process-arrow{padding:0 8px;font-size:1.2rem}
+  .comparison-row{flex-direction:row;min-height:52px}
+  .comparison-label{width:120px;min-width:120px;padding:12px 10px;justify-content:center;text-align:center}
+  .comparison-row.copartners .comparison-label{background:#0a1628}
 }
 @media(min-width:1024px){
   .container{padding:0 60px}
@@ -415,8 +438,45 @@ footer p{font-size:.7rem;color:var(--text-dim);letter-spacing:.08em}
       </div>
     </div>
 
-    <!-- Phase detail -->
-    <div class="process-timeline reveal">
+    <!-- Phase detail: Mobile (stacked cards) -->
+    <div class="process-timeline-mobile reveal">
+      <div class="phase-card">
+        <div class="phase-header-item" style="background:#1a2a4a;color:#fff;border-radius:10px 10px 0 0">① 情報提供・壁打ち</div>
+        <div class="phase-col" style="border-radius:0 0 10px 10px">
+          <ul>
+            <li>日常的なコミュニケーション</li>
+            <li>人間関係の構築</li>
+            <li>経営課題、ニーズの把握</li>
+            <li>適切な専門家の紹介</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-header-item" style="background:#2d4a7a;color:#fff;border-radius:10px 10px 0 0">② オリジネーション・検討</div>
+        <div class="phase-col" style="border-radius:0 0 10px 10px">
+          <ul>
+            <li>具体的なアクション</li>
+            <li>候補先探索</li>
+            <li>アプローチ、提案</li>
+            <li>条件調整、方向性整理</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-header-item" style="background:#4a6fa5;color:#fff;border-radius:10px 10px 0 0">③ 執行</div>
+        <div class="phase-col" style="border-radius:0 0 10px 10px">
+          <ul>
+            <li>基本合意</li>
+            <li>DD</li>
+            <li>最終契約</li>
+            <li>クロージング</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase detail: Desktop (3-column) -->
+    <div class="process-timeline-desktop reveal">
       <div class="phase-header">
         <div class="phase-header-item">① 情報提供・壁打ち</div>
         <div class="phase-header-item">② オリジネーション・検討</div>
@@ -453,14 +513,14 @@ footer p{font-size:.7rem;color:var(--text-dim);letter-spacing:.08em}
     <!-- Comparison -->
     <div class="comparison-block reveal">
       <div class="comparison-row copartners">
-        <div class="comparison-label" style="background:#0a1628;color:#c4a265;font-weight:700">CO Partners</div>
+        <div class="comparison-label">CO Partners</div>
         <div class="comparison-bar">初期段階から継続的に伴走し、構想形成から実行まで支援</div>
       </div>
       <div class="comparison-row general">
         <div class="comparison-label">一般的な業者</div>
-        <div class="comparison-bar" style="background:#f1f5f9;padding:0;overflow:hidden">
+        <div class="comparison-bar" style="background:#f1f5f9;color:#64748b;padding:0;overflow:hidden">
           <span style="flex:1"></span>
-          <div class="comparison-bar-fill" style="background:#94a3b8;color:#fff;padding:12px 16px;white-space:nowrap">執行局面から参画</div>
+          <div class="comparison-bar-fill">執行局面から参画</div>
         </div>
       </div>
     </div>
